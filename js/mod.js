@@ -72,8 +72,51 @@ var backgroundStyle = {}
 
 // Max tick length
 function maxTickLength() {
-    return(3600) // Default is 1 hour
+    return(3600 / speedMultiplier) // Default is 1 hour, adjust based on multiplier
 }
 
 // Fix saves for old versions
-function fixOldSave(oldVersion) {}
+function fixOldSave(oldVersion) {
+    // This function is kept empty, as originally intended.
+    // You can add future save fixes here if needed.
+}
+
+// Add a speed multiplier for the game
+var speedMultiplier = 1;
+
+// Modify maxTickLength to be controlled by speedMultiplier
+function maxTickLength() {
+    return 3600 / speedMultiplier; // Default is 1 hour, adjust based on multiplier
+}
+
+// Add a dev tools button to speed up the game
+function addDevTools() {
+    let button = document.createElement("button");
+    button.innerHTML = "Speed Up Game";
+    button.style.position = "absolute";
+    button.style.top = "10px";
+    button.style.left = "10px";
+    button.style.padding = "10px";
+    button.style.fontSize = "16px";
+    button.onclick = function() {
+        speedMultiplier *= 2; // Double the speed each time the button is clicked
+        console.log("Game speed is now: " + speedMultiplier + "x");
+    };
+    document.body.appendChild(button);
+}
+
+// Add hotkeys to control speed (e.g., "S" to speed up)
+function setupHotkeys() {
+    hotkeys.push({
+        key: "S",
+        description: "Speed up the game",
+        onPress() {
+            speedMultiplier *= 2; // Double the speed on pressing "S"
+            console.log("Game speed is now: " + speedMultiplier + "x");
+        }
+    });
+}
+
+// Initialize dev tools when the game starts
+addDevTools();
+setupHotkeys();
