@@ -89,21 +89,32 @@ function maxTickLength() {
     return 3600 / speedMultiplier; // Default is 1 hour, adjust based on multiplier
 }
 
-// Add a dev tools button to speed up the game
+// Add a dev tools button to speed up the game (integrated into Version Control tab)
 function addDevTools() {
-    let button = document.createElement("button");
-    button.innerHTML = "Speed Up Game";
-    button.style.position = "fixed";
-    button.style.top = "10px";
-    button.style.left = "10px";
-    button.style.padding = "10px";
-    button.style.fontSize = "16px";
-    button.style.zIndex = "1000"; // Ensure it stays on top of the page
-    button.onclick = function() {
+    // Create version control panel with speed multiplier control
+    let versionControlDiv = document.createElement("div");
+    versionControlDiv.style.position = "fixed";
+    versionControlDiv.style.top = "10px";
+    versionControlDiv.style.left = "10px";
+    versionControlDiv.style.padding = "10px";
+    versionControlDiv.style.fontSize = "16px";
+    versionControlDiv.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
+    versionControlDiv.style.color = "white";
+    versionControlDiv.style.zIndex = "1000";
+    versionControlDiv.innerHTML = `
+        <h3>Version Control</h3>
+        <p>Speed Multiplier: <span id="speedDisplay">1x</span></p>
+        <button id="speedUpButton">Speed Up Game</button>
+    `;
+    
+    document.body.appendChild(versionControlDiv);
+    
+    // Button functionality
+    document.getElementById("speedUpButton").onclick = function() {
         speedMultiplier *= 2; // Double the speed each time the button is clicked
+        document.getElementById("speedDisplay").innerText = speedMultiplier + "x"; // Update display
         console.log("Game speed is now: " + speedMultiplier + "x");
     };
-    document.body.appendChild(button);
 }
 
 // Add hotkeys to control speed (e.g., "S" to speed up)
@@ -113,6 +124,7 @@ function setupHotkeys() {
         description: "Speed up the game",
         onPress() {
             speedMultiplier *= 2; // Double the speed on pressing "S"
+            document.getElementById("speedDisplay").innerText = speedMultiplier + "x"; // Update display
             console.log("Game speed is now: " + speedMultiplier + "x");
         }
     });
