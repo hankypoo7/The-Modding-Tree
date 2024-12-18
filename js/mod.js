@@ -73,29 +73,11 @@ function isEndgame() {
 var backgroundStyle = {}
 
 // Max tick length
-var speedMultiplier = 1; // Multiplier for speeding up the game
-
-// Create Speed-Up button and display
-let speedUpButton = document.createElement("button");
-speedUpButton.innerText = "Speed Up Game!";
-document.body.appendChild(speedUpButton);
-
-let speedText = document.createElement("p");
-speedText.innerText = "Speed Multiplier: " + speedMultiplier + "x";
-document.body.appendChild(speedText);
-
-// Button to speed up the game by modifying the tick length
-speedUpButton.addEventListener("click", function() {
-    speedMultiplier *= 2; // Double the speed each time
-    speedText.innerText = "Speed Multiplier: " + speedMultiplier + "x"; // Update text with new speed
-});
-
-// Function to adjust the tick speed
 function maxTickLength() {
-    return 3600 / speedMultiplier; // Speed multiplier affects tick rate
+    return 3600 // Default is 1 hour
 }
 
-// Function for fixing old saves if needed (keeping it empty for now)
+// Fix saves for old versions (no changes needed)
 function fixOldSave(oldVersion) {
     // You can add your save fix logic here if necessary
 }
