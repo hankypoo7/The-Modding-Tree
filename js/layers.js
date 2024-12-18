@@ -27,9 +27,9 @@ addLayer("p", {
     layerShown(){return true}
     upgrades: {
         11: {
-    title: "First Sub!",
-    description: "Double your views gain",
-    cost: new Decimal(1),
+    		title: "First Sub!",
+   		description: "Double your views gain",
+    		cost: new Decimal(1),
         },
     },
 })
