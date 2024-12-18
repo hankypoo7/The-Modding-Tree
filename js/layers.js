@@ -55,6 +55,6 @@ addLayer("p", {
         effectDisplay() { 
             return format(upgradeEffect(this.layer, this.id)) + "x"; // Add formatting to the effect
         },
-    },
+    }
 },
 
