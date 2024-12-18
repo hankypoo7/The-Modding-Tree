@@ -1,33 +1,34 @@
+// Prestige Layer (Views -> Subscribers)
 addLayer("p", {
-    name: "prestige", 
-    symbol: "S", 
-    position: 0, 
+    name: "prestige",
+    symbol: "S",
+    position: 0,
     startData() { 
         return {
             unlocked: true,
-            points: new Decimal(0),
+            points: new Decimal(0), // Points here are Subscribers
         }
     },
     color: "#ff0400",
-    requires: new Decimal(10),
-    resource: "Subscribers", 
-    baseResource: "Views", 
-    baseAmount() { return player.points }, 
-    type: "normal", 
+    requires: new Decimal(10), 
+    resource: "Subscribers", // Resource gained in this layer
+    baseResource: "Views", // Resource this layer is based on
+    baseAmount() { return player.points }, // Get current Views
+    type: "normal",
     exponent: 0.5,
     gainMult() {
-        let mult = new Decimal(1)
-        if (hasUpgrade('p', 13)) mult = mult.times(upgradeEffect('p', 13))
-        return mult
+        let mult = new Decimal(1);
+        if (hasUpgrade('p', 13)) mult = mult.times(upgradeEffect('p', 13)); // Prestige upgrade
+        return mult;
     },
-    gainExp() { 
-        return new Decimal(1)
+    gainExp() {
+        return new Decimal(1);
     },
-    row: 0,
+    row: 0, 
     hotkeys: [
-        {key: "p", description: "P: Reset for Subscribers", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+        { key: "p", description: "P: Reset for Subscribers", onPress(){ if (canReset(this.layer)) doReset(this.layer) }},
     ],
-    layerShown(){return true},
+    layerShown() { return true },
     upgrades: {
         11: {
             title: "First Sub!",
@@ -59,36 +60,37 @@ addLayer("p", {
     },
 });
 
+// Money Layer (Subscribers -> Money)
 addLayer("m", {
-    name: "money", 
-    symbol: "$", 
-    position: 1, // Placed next to the prestige layer
+    name: "money",
+    symbol: "$",
+    position: 1, // Next to the prestige layer
     startData() { 
         return {
             unlocked: true,
-            points: new Decimal(0),
+            points: new Decimal(0), // Points here are Money
         }
     },
-    color: "#00ff00", // Changed color to green for money
-    requires: new Decimal(100), // Higher requirement to unlock money
-    resource: "Money", // Updated resource name
-    baseResource: "Subscribers", // Money is based on Subscribers earned in the prestige layer
-    baseAmount() { return player["p"].points }, // Get the current amount of Subscribers
-    type: "normal", 
-    exponent: 0.3, // Money grows slower than Subscribers
+    color: "#00ff00",
+    requires: new Decimal(100), // Require 100 Subscribers to gain Money
+    resource: "Money", // Resource gained in this layer
+    baseResource: "Subscribers", // Resource this layer is based on
+    baseAmount() { return player["p"].points }, // Get current Subscribers
+    type: "normal",
+    exponent: 0.3, // Slower growth than Subscribers
     gainMult() {
-        let mult = new Decimal(1)
-        if (hasUpgrade('m', 12)) mult = mult.times(1.5) // Example multiplier for money upgrades
-        return mult
+        let mult = new Decimal(1);
+        if (hasUpgrade('m', 12)) mult = mult.times(1.5); // Example money upgrade multiplier
+        return mult;
     },
-    gainExp() { 
-        return new Decimal(1)
+    gainExp() {
+        return new Decimal(1);
     },
-    row: 1, // Placed on the second row in the layer tree
+    row: 1, // Money layer is below the prestige layer
     hotkeys: [
-        {key: "m", description: "M: Reset for Money", onPress(){if (canReset(this.layer)) doReset(this.layer)}}, // Changed hotkey to "M"
+        { key: "m", description: "M: Reset for Money", onPress(){ if (canReset(this.layer)) doReset(this.layer) }},
     ],
-    layerShown(){return true},
+    layerShown() { return true },
     upgrades: {
         11: {
             title: "Cash In!",
