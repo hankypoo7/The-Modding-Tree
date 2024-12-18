@@ -27,34 +27,34 @@ addLayer("p", {
     hotkeys: [
         {key: "p", description: "P: Reset for Subscribers", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
-    layerShown(){return true}, // <-- Missing comma added here
+    layerShown(){return true},
     upgrades: {
-    11: {
-        title: "First Sub!",
-        description: "Double your views gain",
-        cost: new Decimal(1),
-    },
-    12: {
-        title: "Woah, this is good!",
-        description: "Subscribers watch all your videos",
-        cost: new Decimal(2),
-        effect() {
-            return player[this.layer].points.add(1).pow(0.5);
+        11: {
+            title: "First Sub!",
+            description: "Double your views gain",
+            cost: new Decimal(1),
         },
-        effectDisplay() { 
-            return format(upgradeEffect(this.layer, this.id)) + "x"; // Add formatting to the effect
+        12: {
+            title: "Woah, this is good!",
+            description: "Subscribers watch all your videos",
+            cost: new Decimal(2),
+            effect() {
+                return player[this.layer].points.add(1).pow(0.5);
+            },
+            effectDisplay() { 
+                return format(upgradeEffect(this.layer, this.id)) + "x"; // Add formatting to the effect
+            },
         },
-    },
-    13: {
-        title: "Better videos",
-        description: "\"smash that subscribe button\"",
-        cost: new Decimal(5),
-        effect() {
-            return player.points.add(1).pow(0.15)
+        13: {
+            title: "Better videos",
+            description: "\"smash that subscribe button\"",
+            cost: new Decimal(5),
+            effect() {
+                return player.points.add(1).pow(0.15);
+            },
+            effectDisplay() { 
+                return format(upgradeEffect(this.layer, this.id)) + "x"; // Add formatting to the effect
+            },
         },
-        effectDisplay() { 
-            return format(upgradeEffect(this.layer, this.id)) + "x"; // Add formatting to the effect
-        },
-    }
-},
-
+    }, // This closes the `upgrades` object
+});
