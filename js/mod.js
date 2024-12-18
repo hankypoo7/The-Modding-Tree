@@ -74,24 +74,28 @@ var backgroundStyle = {}
 
 // Max tick length
 var speedMultiplier = 1; // Multiplier for speeding up the game
+
+// Create Speed-Up button and display
 let speedUpButton = document.createElement("button");
 speedUpButton.innerText = "Speed Up Game!";
 document.body.appendChild(speedUpButton);
 
+let speedText = document.createElement("p");
+speedText.innerText = "Speed Multiplier: " + speedMultiplier + "x";
+document.body.appendChild(speedText);
+
 // Button to speed up the game by modifying the tick length
 speedUpButton.addEventListener("click", function() {
     speedMultiplier *= 2; // Double the speed each time
-    console.log("Speed Multiplier: " + speedMultiplier + "x");
+    speedText.innerText = "Speed Multiplier: " + speedMultiplier + "x"; // Update text with new speed
 });
 
 // Function to adjust the tick speed
 function maxTickLength() {
-    console.log("Current maxTickLength: ", 3600 / speedMultiplier); // Log the tick length for debugging
     return 3600 / speedMultiplier; // Speed multiplier affects tick rate
 }
 
 // Function for fixing old saves if needed (keeping it empty for now)
 function fixOldSave(oldVersion) {
     // You can add your save fix logic here if necessary
-    console.log("Fixing old save for version:", oldVersion);
 }
