@@ -95,7 +95,7 @@ addLayer("m", {
         11: {
             title: "Cash In!",
             description: "Boost money generation by 2x",
-            cost: new Decimal(10),
+            cost: new Decimal(1),
             effect() {
                 return new Decimal(2);
             },
@@ -106,7 +106,7 @@ addLayer("m", {
         12: {
             title: "Big Investment",
             description: "Money boosts itself slightly",
-            cost: new Decimal(25),
+            cost: new Decimal(5),
             effect() {
                 return player[this.layer].points.add(1).pow(0.1); // Boost scales with Money
             },
