@@ -93,11 +93,12 @@ function maxTickLength() {
 function addDevTools() {
     let button = document.createElement("button");
     button.innerHTML = "Speed Up Game";
-    button.style.position = "absolute";
+    button.style.position = "fixed";
     button.style.top = "10px";
     button.style.left = "10px";
     button.style.padding = "10px";
     button.style.fontSize = "16px";
+    button.style.zIndex = "1000"; // Ensure it stays on top of the page
     button.onclick = function() {
         speedMultiplier *= 2; // Double the speed each time the button is clicked
         console.log("Game speed is now: " + speedMultiplier + "x");
