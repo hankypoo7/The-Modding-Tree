@@ -15,8 +15,9 @@ addLayer("p", {
     baseAmount() { return player.points }, // Get the current amount of baseResource
     type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     exponent: 0.5, // Prestige currency exponent
-    gainMult() { // Calculate the multiplier for main currency from bonuses
+    gainMult() {
         let mult = new Decimal(1)
+        if (hasUpgrade('p', 13)) mult = mult.times(upgradeEffect('p', 13))
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -39,6 +40,17 @@ addLayer("p", {
         cost: new Decimal(2),
         effect() {
             return player[this.layer].points.add(1).pow(0.5);
+        },
+        effectDisplay() { 
+            return format(upgradeEffect(this.layer, this.id)) + "x"; // Add formatting to the effect
+        },
+    },
+    13: {
+        title: "Better videos",
+        description: "\"smash that subscribe button\"",
+        cost: new Decimal(2),
+        effect() {
+            return player.points.add(1).pow(0.15)
         },
         effectDisplay() { 
             return format(upgradeEffect(this.layer, this.id)) + "x"; // Add formatting to the effect
