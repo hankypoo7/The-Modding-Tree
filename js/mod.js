@@ -1,3 +1,4 @@
+// Mod Information
 let modInfo = {
     name: "The YouTube Tree",
     author: "Henry Wemmie",
@@ -10,6 +11,7 @@ let modInfo = {
     offlineLimit: 1, // In hours
 }
 
+// Version Info
 let VERSION = {
     num: "0.0",
     name: "Literally nothing",
@@ -22,7 +24,7 @@ let changelog = `<h1>Changelog:</h1><br>
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
 
-var doNotCallTheseFunctionsEveryTick = ["blowUpEverything"]
+var doNotCallTheseFunctionsEveryTick = ["blowUpEverything"] // Don't call these every tick
 
 function getStartPoints() {
     return new Decimal(modInfo.initialStartPoints)
@@ -32,7 +34,7 @@ function canGenPoints() {
     return true
 }
 
-// Separate views/points generation
+// Function to calculate the point generation per second
 function getPointGen() {
     if (!canGenPoints())
         return new Decimal(0);
@@ -42,9 +44,9 @@ function getPointGen() {
     return gain;
 }
 
-// Separate money generation (if applicable)
+// Function to calculate the money generation (if applicable)
 function getMoneyGen() {
-    let gain = new Decimal(0); // Money generation logic goes here
+    let gain = new Decimal(0); // Money generation logic
     if (hasUpgrade('m', 11)) gain = gain.add(1); // Example: +1 money/sec with upgrade
     return gain;
 }
@@ -59,77 +61,37 @@ function addedPlayerData() {
 // Display extra things at the top of the page
 var displayThings = [
     "You are gaining " + format(getPointGen()) + " views per second.",
-    "You are gaining " + format(getMoneyGen()) + " money per second.", // Separate display for money
+    "You are gaining " + format(getMoneyGen()) + " money per second.", // Display for money
 ];
 
 // Determines when the game "ends"
 function isEndgame() {
-    return player.points.gte(new Decimal("e280000000")); // Endgame only considers views/points for now
+    return player.points.gte(new Decimal("e280000000")); // Endgame condition for views
 }
 
 // Background styles
 var backgroundStyle = {}
 
 // Max tick length
+var speedMultiplier = 1; // Multiplier for speeding up the game
+let speedUpButton = document.createElement("button");
+speedUpButton.innerText = "Speed Up Game!";
+document.body.appendChild(speedUpButton);
+
+// Button to speed up the game by modifying the tick length
+speedUpButton.addEventListener("click", function() {
+    speedMultiplier *= 2; // Double the speed each time
+    console.log("Speed Multiplier: " + speedMultiplier + "x");
+});
+
+// Function to adjust the tick speed
 function maxTickLength() {
-    return(3600 / speedMultiplier) // Default is 1 hour, adjust based on multiplier
+    console.log("Current maxTickLength: ", 3600 / speedMultiplier); // Log the tick length for debugging
+    return 3600 / speedMultiplier; // Speed multiplier affects tick rate
 }
 
-// Fix saves for old versions
+// Function for fixing old saves if needed (keeping it empty for now)
 function fixOldSave(oldVersion) {
-    // This function is kept empty, as originally intended.
-    // You can add future save fixes here if needed.
+    // You can add your save fix logic here if necessary
+    console.log("Fixing old save for version:", oldVersion);
 }
-
-// Add a speed multiplier for the game
-var speedMultiplier = 1;
-
-// Modify maxTickLength to be controlled by speedMultiplier
-function maxTickLength() {
-    return 3600 / speedMultiplier; // Default is 1 hour, adjust based on multiplier
-}
-
-// Add a dev tools button to speed up the game (integrated into Version Control tab)
-function addDevTools() {
-    // Create version control panel with speed multiplier control
-    let versionControlDiv = document.createElement("div");
-    versionControlDiv.style.position = "fixed";
-    versionControlDiv.style.top = "10px";
-    versionControlDiv.style.left = "10px";
-    versionControlDiv.style.padding = "10px";
-    versionControlDiv.style.fontSize = "16px";
-    versionControlDiv.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
-    versionControlDiv.style.color = "white";
-    versionControlDiv.style.zIndex = "1000";
-    versionControlDiv.innerHTML = `
-        <h3>Version Control</h3>
-        <p>Speed Multiplier: <span id="speedDisplay">1x</span></p>
-        <button id="speedUpButton">Speed Up Game</button>
-    `;
-    
-    document.body.appendChild(versionControlDiv);
-    
-    // Button functionality
-    document.getElementById("speedUpButton").onclick = function() {
-        speedMultiplier *= 2; // Double the speed each time the button is clicked
-        document.getElementById("speedDisplay").innerText = speedMultiplier + "x"; // Update display
-        console.log("Game speed is now: " + speedMultiplier + "x");
-    };
-}
-
-// Add hotkeys to control speed (e.g., "S" to speed up)
-function setupHotkeys() {
-    hotkeys.push({
-        key: "S",
-        description: "Speed up the game",
-        onPress() {
-            speedMultiplier *= 2; // Double the speed on pressing "S"
-            document.getElementById("speedDisplay").innerText = speedMultiplier + "x"; // Update display
-            console.log("Game speed is now: " + speedMultiplier + "x");
-        }
-    });
-}
-
-// Initialize dev tools when the game starts
-addDevTools();
-setupHotkeys();
