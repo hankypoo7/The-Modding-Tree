@@ -48,7 +48,7 @@ addLayer("p", {
     13: {
         title: "Better videos",
         description: "\"smash that subscribe button\"",
-        cost: new Decimal(2),
+        cost: new Decimal(5),
         effect() {
             return player.points.add(1).pow(0.15)
         },
