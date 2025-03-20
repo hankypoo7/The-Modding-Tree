@@ -1,4 +1,4 @@
-// Mod Information
+// Mod Information 
 let modInfo = {
     name: "The YouTube Tree",
     author: "Henry Wemmie",
