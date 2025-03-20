@@ -67,7 +67,7 @@ addLayer("m", {
     position: 1, // Next to the prestige layer
     startData() { 
         return {
-            unlocked: true,
+            unlocked: false, // Unlocks at 100 Subscribers
             points: new Decimal(0), // Points here are Money
         }
     },
@@ -80,17 +80,17 @@ addLayer("m", {
     exponent: 0.3, // Slower growth than Subscribers
     gainMult() {
         let mult = new Decimal(1);
-        if (hasUpgrade('m', 12)) mult = mult.times(1.5);
+        if (hasUpgrade('m', 12)) mult = mult.times(upgradeEffect('m', 12)); // Money upgrade multiplier
         return mult;
     },
     gainExp() {
         return new Decimal(1);
     },
-    row: 1, 
+    row: 1, // Money layer is below the prestige layer
     hotkeys: [
         { key: "m", description: "M: Reset for Money", onPress(){ if (canReset(this.layer)) doReset(this.layer) }},
     ],
-    layerShown() { return true },
+    layerShown() { return player["p"].points.gte(10) || player["m"].points.gte(1); }, // Unlock when reaching 10 subscribers
     upgrades: {
         11: {
             title: "Cash In!",
@@ -108,7 +108,7 @@ addLayer("m", {
             description: "Money boosts itself slightly",
             cost: new Decimal(5),
             effect() {
-                return player[this.layer].points.add(1).pow(0.1);
+                return player[this.layer].points.add(1).pow(0.1); // Boost scales with Money
             },
             effectDisplay() { 
                 return format(upgradeEffect(this.layer, this.id)) + "x"; 
@@ -120,39 +120,40 @@ addLayer("m", {
 // Sponsors Layer (Money -> Sponsors)
 addLayer("s", {
     name: "sponsors",
-    symbol: "S",
-    position: 2, 
+    symbol: "🏆",
+    position: 2,
     startData() { 
         return {
-            unlocked: true,
+            unlocked: false, // Unlock at 10 money
             points: new Decimal(0), // Points here are Sponsors
         }
     },
     color: "#FFD700",
-    requires: new Decimal(500), // Require 500 Money to unlock Sponsors
+    requires: new Decimal(10), // Need 10 money to unlock
     resource: "Sponsors", // Resource gained in this layer
     baseResource: "Money", // Resource this layer is based on
     baseAmount() { return player["m"].points }, // Get current Money
-    type: "normal",
-    exponent: 0.2, 
+    type: "static",
+    exponent: 0.2, // Slow growth
+    base: 2,
     gainMult() {
         let mult = new Decimal(1);
-        if (hasUpgrade('s', 12)) mult = mult.times(1.5);
+        if (hasUpgrade('s', 11)) mult = mult.times(1.5); // Example sponsor upgrade multiplier
         return mult;
     },
     gainExp() {
         return new Decimal(1);
     },
-    row: 2, 
+    row: 2, // Sponsors layer is below Money
     hotkeys: [
         { key: "s", description: "S: Reset for Sponsors", onPress(){ if (canReset(this.layer)) doReset(this.layer) }},
     ],
-    layerShown() { return player["m"].points.gte(10) || player["s"].unlocked; },
+    layerShown() { return player["m"].points.gte(10) || player["s"].points.gte(1); }, // Unlock when reaching 10 money
     upgrades: {
         11: {
-            title: "Brand Sponsorships",
-            description: "Sponsors boost Money generation",
-            cost: new Decimal(2),
+            title: "Brand Deals!",
+            description: "Each sponsor boosts money production",
+            cost: new Decimal(1),
             effect() {
                 return player[this.layer].points.add(1).pow(0.3);
             },
@@ -161,9 +162,9 @@ addLayer("s", {
             },
         },
         12: {
-            title: "Big Sponsors",
-            description: "Sponsors boost Subscribers",
-            cost: new Decimal(5),
+            title: "Corporate Sponsorship",
+            description: "Sponsors boost subscriber gain",
+            cost: new Decimal(3),
             effect() {
                 return player[this.layer].points.add(1).pow(0.2);
             },
