@@ -124,7 +124,7 @@ addLayer("s", {
     position: 2, 
     startData() { 
         return {
-            unlocked: false,
+            unlocked: true,
             points: new Decimal(0), // Points here are Sponsors
         }
     },
@@ -147,7 +147,7 @@ addLayer("s", {
     hotkeys: [
         { key: "s", description: "S: Reset for Sponsors", onPress(){ if (canReset(this.layer)) doReset(this.layer) }},
     ],
-    layerShown() { return player["m"].points.gte(500) || player["s"].unlocked },
+    layerShown() { return player["m"].points.gte(10) || player["s"].unlocked; },
     upgrades: {
         11: {
             title: "Brand Sponsorships",
