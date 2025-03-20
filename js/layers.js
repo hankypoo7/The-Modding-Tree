@@ -80,13 +80,13 @@ addLayer("m", {
     exponent: 0.3, // Slower growth than Subscribers
     gainMult() {
         let mult = new Decimal(1);
-        if (hasUpgrade('m', 12)) mult = mult.times(1.5); // Example money upgrade multiplier
+        if (hasUpgrade('m', 12)) mult = mult.times(1.5);
         return mult;
     },
     gainExp() {
         return new Decimal(1);
     },
-    row: 1, // Money layer is below the prestige layer
+    row: 1, 
     hotkeys: [
         { key: "m", description: "M: Reset for Money", onPress(){ if (canReset(this.layer)) doReset(this.layer) }},
     ],
@@ -108,7 +108,64 @@ addLayer("m", {
             description: "Money boosts itself slightly",
             cost: new Decimal(5),
             effect() {
-                return player[this.layer].points.add(1).pow(0.1); // Boost scales with Money
+                return player[this.layer].points.add(1).pow(0.1);
+            },
+            effectDisplay() { 
+                return format(upgradeEffect(this.layer, this.id)) + "x"; 
+            },
+        },
+    },
+});
+
+// Sponsors Layer (Money -> Sponsors)
+addLayer("s", {
+    name: "sponsors",
+    symbol: "S",
+    position: 2, 
+    startData() { 
+        return {
+            unlocked: false,
+            points: new Decimal(0), // Points here are Sponsors
+        }
+    },
+    color: "#FFD700",
+    requires: new Decimal(500), // Require 500 Money to unlock Sponsors
+    resource: "Sponsors", // Resource gained in this layer
+    baseResource: "Money", // Resource this layer is based on
+    baseAmount() { return player["m"].points }, // Get current Money
+    type: "normal",
+    exponent: 0.2, 
+    gainMult() {
+        let mult = new Decimal(1);
+        if (hasUpgrade('s', 12)) mult = mult.times(1.5);
+        return mult;
+    },
+    gainExp() {
+        return new Decimal(1);
+    },
+    row: 2, 
+    hotkeys: [
+        { key: "s", description: "S: Reset for Sponsors", onPress(){ if (canReset(this.layer)) doReset(this.layer) }},
+    ],
+    layerShown() { return player["m"].points.gte(500) || player["s"].unlocked },
+    upgrades: {
+        11: {
+            title: "Brand Sponsorships",
+            description: "Sponsors boost Money generation",
+            cost: new Decimal(2),
+            effect() {
+                return player[this.layer].points.add(1).pow(0.3);
+            },
+            effectDisplay() { 
+                return format(upgradeEffect(this.layer, this.id)) + "x"; 
+            },
+        },
+        12: {
+            title: "Big Sponsors",
+            description: "Sponsors boost Subscribers",
+            cost: new Decimal(5),
+            effect() {
+                return player[this.layer].points.add(1).pow(0.2);
             },
             effectDisplay() { 
                 return format(upgradeEffect(this.layer, this.id)) + "x"; 
