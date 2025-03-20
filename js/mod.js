@@ -63,7 +63,6 @@ function addedPlayerData() {
 // Display extra things at the top of the page
 var displayThings = [
     "You are gaining " + format(getPointGen()) + " views per second.",
-    "You are gaining " + format(getMoneyGen()) + " money per second.",
     "You have " + format(player.m.points) + " money.",
 ];
 
